@@ -6,6 +6,9 @@ import SocketContext from './context';
 
 const uri = process.env.API_URL;
 
+// eslint-disable-next-line no-console
+console.log(`socket url ${uri}`);
+
 const socket = io.connect(uri);
 
 const SocketProvider: React.FC = ({ children }) => {
