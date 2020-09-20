@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
 
 import { Sheet } from '~/components/modules/dnd';
-import { Editor } from '~/components/modules/editor';
 import { DndProvider, EditorProvider, SocketProvider } from '~/contexts';
 import { useEmitEvent, useOnEvent } from '~/contexts/SocketProvider';
 import { Character, DndDatabase, DndUser, DndTable } from '~/interfaces/dnd';
@@ -31,8 +30,6 @@ const Dnd: React.FC = () => {
 
   useOnEvent('characters', (chars: Character[]) => {
     setCharacters(chars);
-
-    console.log(chars);
   });
 
   useEffect(() => {

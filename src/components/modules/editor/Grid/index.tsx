@@ -3,7 +3,7 @@ import { Stage } from 'react-konva';
 
 import { Box } from '@chakra-ui/core';
 
-import { useIsClient, useWindowSize } from '~/hooks';
+import { useWindowSize } from '~/hooks';
 
 import GridLayer from '../GridLayer';
 

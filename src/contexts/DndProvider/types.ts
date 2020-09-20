@@ -1,4 +1,4 @@
-import { Character, DndDatabase, DndUser } from '~/interfaces/dnd';
+import { Character, DndDatabase } from '~/interfaces/dnd';
 
 export type DndContextType = {
   isProficientWithSkill: (character: Character, skillIndex: string) => boolean;

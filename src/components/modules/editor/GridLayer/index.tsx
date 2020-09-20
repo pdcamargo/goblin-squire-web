@@ -3,8 +3,6 @@ import { Layer, Line } from 'react-konva';
 
 import Konva from 'konva';
 
-import { useWindowSize } from '~/hooks';
-
 function GridLayer() {
   const [lines, setLines] = useState<Konva.LineConfig[]>([]);
 

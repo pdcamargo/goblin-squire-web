@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { FiSun } from 'react-icons/fi';
 import { WiDayCloudyWindy } from 'react-icons/wi';
 

@@ -37,13 +37,11 @@ const DiceProvider: React.FC = ({ children }) => {
 
       function afterRoll(notation, result: number[]) {
         const sum = result.reduce((a, b) => a + b, 0);
-        console.log(`result is ${sum + bonus}`);
       }
 
       box.rolling = false;
 
       box.start_throw(notationGetter, beforeRoll, afterRoll);
-      console.log(`rolling starting to formula ${dice} + ${bonus}`);
     },
     [box]
   );

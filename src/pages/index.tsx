@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Box, List, ListItem } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/core';
 
 import { Navbar } from '~/components';
 
