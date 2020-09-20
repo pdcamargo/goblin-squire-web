@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 import SocketContext from './context';
 
-const uri = process.env.API_URL;
+const uri = process.env.NEXT_PUBLIC_API_URL;
 
 // eslint-disable-next-line no-console
 console.log(`socket url ${uri}`);
