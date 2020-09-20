@@ -33,12 +33,14 @@ const DiceProvider: React.FC = ({ children }) => {
 
       function beforeRoll(vectors, notation, callback) {
         callback();
+
+        return { vectors, notation };
       }
 
       function afterRoll(notation, result: number[]) {
         const sum = result.reduce((a, b) => a + b, 0) + bonus;
 
-        return sum;
+        return { sum, notation };
       }
 
       box.rolling = false;
