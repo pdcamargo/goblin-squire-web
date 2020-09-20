@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import io from 'socket.io-client';
 
 import SocketContext from './context';
 
-const uri = 'http://localhost:3001';
+const uri = process.env.API_URL;
 
 const socket = io.connect(uri);
 
