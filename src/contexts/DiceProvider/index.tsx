@@ -36,7 +36,7 @@ const DiceProvider: React.FC = ({ children }) => {
       }
 
       function afterRoll(notation, result: number[]) {
-        const sum = result.reduce((a, b) => a + b, 0);
+        const sum = result.reduce((a, b) => a + b, 0) + bonus;
 
         return sum;
       }
