@@ -7,5 +7,3 @@ export function useDndSheet() {
 
   return context;
 }
-
-export default Sheet;
