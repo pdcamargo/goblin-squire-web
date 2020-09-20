@@ -6,7 +6,7 @@ import { useDice } from '~/contexts/DiceProvider';
 import { useDnd } from '~/contexts/DndProvider';
 
 import DndBox from '../DndBox';
-import { useDndSheet } from '../Sheet';
+import { useDndSheet } from '../Sheet/hooks';
 import { SavePropsType } from './types';
 
 const Save: React.FC<SavePropsType> = ({ name, index }) => {

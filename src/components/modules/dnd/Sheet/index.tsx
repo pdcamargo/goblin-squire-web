@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/core';
 
 import { useDice } from '~/contexts/DiceProvider';
-import { useEditor } from '~/contexts/EditorProvider';
+import { useEditor } from '~/contexts/EditorProvider/hooks';
 
 import vitals from '../../../../assets/dnd/vitals.svg';
 import ArmorClass from '../ArmorClass';
@@ -99,11 +99,5 @@ const Sheet: React.FC<SheetPropsType> = ({ character }) => {
     </Modal>
   );
 };
-
-export function useDndSheet() {
-  const context = useContext(DndSheetContext);
-
-  return context;
-}
 
 export default Sheet;

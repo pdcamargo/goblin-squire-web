@@ -48,8 +48,4 @@ const EditorProvider: React.FC<EditorProviderPropsType> = ({
   );
 };
 
-export function useEditor() {
-  return useContext(EditorContext);
-}
-
 export default EditorProvider;

@@ -6,6 +6,7 @@ import { Grid } from '~/components/modules/editor';
 
 import DiceContext from './context';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $t: any;
 
 const DiceProvider: React.FC = ({ children }) => {

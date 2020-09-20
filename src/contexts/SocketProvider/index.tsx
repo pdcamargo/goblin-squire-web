@@ -26,9 +26,9 @@ export const useSocket = () => {
   return socket;
 };
 
-export function useEmitEvent(eventName: string) {
+export function useEmitEvent<T = unknown>(eventName: string) {
   return useCallback(
-    (data: any) => {
+    (data: T) => {
       socket.emit(eventName, data);
     },
     [eventName]

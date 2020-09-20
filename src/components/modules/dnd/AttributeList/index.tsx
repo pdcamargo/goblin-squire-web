@@ -6,7 +6,7 @@ import { useDnd } from '~/contexts/DndProvider';
 
 import abilityBackBg from '../../../../assets/dnd/ability-back.svg';
 import abilityBg from '../../../../assets/dnd/ability.svg';
-import { useDndSheet } from '../Sheet';
+import { useDndSheet } from '../Sheet/hooks';
 import { AttributePropsType } from './types';
 
 const AttributeList: React.FC = () => {

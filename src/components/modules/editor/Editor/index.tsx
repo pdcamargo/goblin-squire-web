@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Box, List, ListItem, Stack } from '@chakra-ui/core';
 
 import { DiceProvider } from '~/contexts';
-import { useEditor } from '~/contexts/EditorProvider';
+import { useEditor } from '~/contexts/EditorProvider/hooks';
 
 const Editor: React.FC = ({ children }) => {
   return (
