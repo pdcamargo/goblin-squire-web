@@ -1,5 +1,5 @@
 export type AttributePropsType = {
   name: string;
-  index: stirng;
+  index: string;
   children?: never;
 };
