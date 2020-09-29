@@ -1,9 +1,19 @@
 import React, { useCallback } from 'react';
+import { BsTrash } from 'react-icons/bs';
 
-import { Box, List, ListItem, Stack } from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Heading,
+  IconButton,
+  List,
+  ListItem,
+  Stack,
+} from '@chakra-ui/core';
 
 import { DiceProvider } from '~/contexts';
 import { useEditor } from '~/contexts/EditorProvider/hooks';
+import { useEmitEvent } from '~/contexts/SocketProvider';
 
 const Editor: React.FC = ({ children }) => {
   return (
@@ -40,7 +50,7 @@ const Users: React.FC = () => {
       <Stack spacing={1}>
         {users.map((u) => (
           <Box
-            key={u.socket}
+            key={u.id}
             boxSize="75px"
             border="solid 1px"
             borderColor="gray.700"
@@ -58,7 +68,9 @@ const Users: React.FC = () => {
 };
 
 const Sidebar: React.FC = () => {
-  const { characters, openSheet, isSheetOpen } = useEditor();
+  const { characters, openSheet, isSheetOpen, tableInformation } = useEditor();
+
+  const createCharacter = useEmitEvent<{ tableId: string }>('createCharacter');
 
   const openCharacter = useCallback(
     (characterId: string) => {
@@ -71,19 +83,55 @@ const Sidebar: React.FC = () => {
 
   return (
     <Box
-      position="relative"
-      width="270px"
-      height="100vh"
-      bg="white"
-      color="gray.700"
+      w="270px"
+      h="100vh"
+      pos="relative"
+      py={3}
+      bg="gray.700"
+      color="white"
+      borderLeft="1px solid #dddddd"
     >
       <List>
-        {characters.map((c) => (
-          <ListItem key={Math.random()} onClick={() => openCharacter(c.userId)}>
-            {c.bio.name}
-          </ListItem>
-        ))}
+        <Stack spacing={1}>
+          {characters.map((c) => (
+            <ListItem
+              key={c.id}
+              onClick={() => openCharacter(c.id)}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              px={4}
+              py={2}
+              borderTop="solid 1px"
+              borderBottom="solid 1px"
+              borderColor="gray.900"
+              cursor="pointer"
+              _hover={{
+                bg: 'gray.800',
+              }}
+            >
+              <Heading w="100%" size="xs" ml={2}>
+                {c.bio.name}
+              </Heading>
+              <IconButton
+                aria-label="Delete character"
+                icon={<BsTrash />}
+                size="sm"
+                isRound
+                colorScheme="red"
+              />
+            </ListItem>
+          ))}
+        </Stack>
       </List>
+
+      <Button
+        bg="red.400"
+        mt={3}
+        onClick={() => createCharacter({ tableId: tableInformation.id })}
+      >
+        Create character
+      </Button>
     </Box>
   );
 };

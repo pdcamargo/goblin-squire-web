@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 
 import SocketContext from './context';
 
@@ -9,32 +9,44 @@ const uri = process.env.NEXT_PUBLIC_API_URL || 'https://api.goblinsquire.com';
 // eslint-disable-next-line no-console
 console.log(`socket url ${uri}`);
 
-const socket = io.connect(uri);
-
 const SocketProvider: React.FC = ({ children }) => {
+  const [socket, setSocket] = useState<typeof Socket>(null);
+
   useEffect(() => {
+    const newSocket = io.connect(uri);
+
+    setSocket(newSocket);
+
     return () => {
-      return socket.disconnect();
+      return newSocket.disconnect();
     };
   }, []);
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {children}
+      {Boolean(socket) && children}
     </SocketContext.Provider>
   );
 };
 
 export const useSocket = () => {
-  return socket;
+  const context = useContext(SocketContext);
+
+  if (!context) {
+    throw new Error('useSocket must only be used inside of Socket Provider');
+  }
+
+  return context.socket;
 };
 
 export function useEmitEvent<T = unknown>(eventName: string) {
+  const socket = useSocket();
+
   return useCallback(
     (data: T) => {
-      socket.emit(eventName, data);
+      data && socket.emit(eventName, data);
     },
-    [eventName]
+    [socket, eventName]
   );
 }
 
@@ -42,13 +54,15 @@ export function useOnEvent<TData = unknown>(
   eventName: string | undefined,
   callback: (data: TData) => void
 ) {
+  const socket = useSocket();
+
   useEffect(() => {
     if (eventName) {
       socket.on(eventName, (data: TData) => {
         callback(data);
       });
     }
-  }, [eventName, callback]);
+  }, [socket, eventName, callback]);
 }
 
 export default SocketProvider;

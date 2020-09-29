@@ -325,6 +325,7 @@ export type CharacterAbilityScore = {
 };
 
 export type Character = {
+  id: string;
   userId: string;
   level: number;
   bio: CharacterBio;
@@ -337,11 +338,16 @@ export type Character = {
 
 export type DndUser = {
   id: string;
-  socket: string;
+  name: string;
+  socketId: string;
 };
 
-export type DndTable = {
+export type TableInformation = {
   id: string;
+  gm: string;
+};
+
+export type DndTable = TableInformation & {
   database: DndDatabase;
   characters: Character[];
   users: DndUser[];

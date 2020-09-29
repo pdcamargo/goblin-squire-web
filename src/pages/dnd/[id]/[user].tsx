@@ -2,15 +2,24 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/dist/client/router';
 
-import { Sheet } from '~/components/modules/dnd';
-import { DndProvider, EditorProvider, SocketProvider } from '~/contexts';
+import { SheetController } from '~/components/modules/dnd';
+import { DndProvider, EditorProvider } from '~/contexts';
 import { useEmitEvent, useOnEvent } from '~/contexts/SocketProvider';
-import { Character, DndDatabase, DndUser, DndTable } from '~/interfaces/dnd';
+import {
+  Character,
+  DndDatabase,
+  DndUser,
+  DndTable,
+  TableInformation,
+} from '~/interfaces/dnd';
 
 const Dnd: React.FC = () => {
   const [database, setDatabase] = useState<DndDatabase>(null);
   const [users, setUsers] = useState<DndUser[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [tableInformation, setTableÌnformation] = useState<TableInformation>(
+    null
+  );
 
   const startTable = useEmitEvent('startTable');
 
@@ -18,17 +27,40 @@ const Dnd: React.FC = () => {
     query: { id, user },
   } = useRouter();
 
+  const updateCharacter = (
+    characterId: string,
+    newValues: Partial<Character>
+  ) => {
+    const charCopy = characters.slice();
+
+    const copyCharIndex = charCopy.findIndex((char) => char.id === characterId);
+    let copyChar = charCopy[copyCharIndex];
+
+    copyChar = { ...copyChar, ...newValues };
+
+    charCopy[copyCharIndex] = copyChar;
+
+    setCharacters(charCopy);
+  };
+
   useOnEvent(id ? `setupTable:${id}` : undefined, (table: DndTable) => {
-    setDatabase(table.database);
-    setUsers(table.users);
-    setCharacters(table.characters);
+    const {
+      characters: tableCharacters,
+      database: tableDatabase,
+      users: tableUsers,
+      ...tableInfo
+    } = table;
+    setDatabase(tableDatabase);
+    setUsers(tableUsers);
+    setCharacters(tableCharacters);
+    setTableÌnformation(tableInfo);
   });
 
   useOnEvent('currentUsers', (newUsers: DndUser[]) => {
     setUsers(newUsers);
   });
 
-  useOnEvent('characters', (chars: Character[]) => {
+  useOnEvent('currentCharacters', (chars: Character[]) => {
     setCharacters(chars);
   });
 
@@ -42,15 +74,15 @@ const Dnd: React.FC = () => {
   }, [id, startTable, user]);
 
   return (
-    <SocketProvider>
-      <EditorProvider characters={characters} users={users}>
-        <DndProvider database={database}>
-          {characters.map((c) => (
-            <Sheet key={c.userId} character={c} />
-          ))}
-        </DndProvider>
-      </EditorProvider>
-    </SocketProvider>
+    <EditorProvider
+      characters={characters}
+      users={users}
+      tableInformation={tableInformation}
+    >
+      <DndProvider database={database}>
+        <SheetController updateCharacter={updateCharacter} />
+      </DndProvider>
+    </EditorProvider>
   );
 };
 

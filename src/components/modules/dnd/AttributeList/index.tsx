@@ -1,8 +1,19 @@
 import React from 'react';
 
-import { Box, Stack, Text } from '@chakra-ui/core';
+import {
+  Box,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Stack,
+  Text,
+} from '@chakra-ui/core';
 
+import { useDice } from '~/contexts/DiceProvider';
 import { useDnd } from '~/contexts/DndProvider';
+import { useEditor } from '~/contexts/EditorProvider/hooks';
+import { useEmitEvent } from '~/contexts/SocketProvider';
+import { Character } from '~/interfaces/dnd';
 
 import abilityBackBg from '../../../../assets/dnd/ability-back.svg';
 import abilityBg from '../../../../assets/dnd/ability.svg';
@@ -39,10 +50,40 @@ const AttributeList: React.FC = () => {
 
 const Attribute: React.FC<AttributePropsType> = ({ name, index }) => {
   const { getAttributeModifier } = useDnd();
-  const { character } = useDndSheet();
+  const { character, updateCharacter } = useDndSheet();
+  const { tableInformation } = useEditor();
+  const { roll } = useDice();
 
   const attr = character.abilityScores.find((a) => a.ability_score === index);
   const mod = getAttributeModifier(attr.value);
+
+  const changeCharacter = useEmitEvent<{
+    newValues: Partial<Character>;
+    tableId: string;
+    characterId: string;
+  }>('updateCharacter');
+
+  const handleChangeAttribute = (value: string) => {
+    const attrCopy = { ...attr, value: value !== '' ? +value : 0 };
+
+    const scoreIndex = character.abilityScores.findIndex(
+      (a) => a.ability_score === index
+    );
+
+    const abilityScores = character.abilityScores.slice();
+
+    abilityScores[scoreIndex] = attrCopy;
+
+    const newValues = { abilityScores };
+
+    changeCharacter({
+      newValues,
+      tableId: tableInformation.id,
+      characterId: character.id,
+    });
+
+    updateCharacter(character.id, newValues);
+  };
 
   return (
     <Box
@@ -58,13 +99,30 @@ const Attribute: React.FC<AttributePropsType> = ({ name, index }) => {
       flexDir="column"
       alignItems="center"
     >
-      <Text fontWeight="bold" fontSize="xs">
+      <Text
+        fontWeight="bold"
+        fontSize="xs"
+        cursor="pointer"
+        _hover={{ color: 'red.500' }}
+        onClick={() => roll('1d20', mod)}
+      >
         {name}
       </Text>
       <Text fontWeight="bolder" fontSize="3xl" position="relative" top="-5px">
         {mod}
       </Text>
-      <Box>{attr.value}</Box>
+      <Box>
+        <Editable
+          defaultValue={`${attr.value}`}
+          w="30px"
+          h="25px"
+          textAlign="center"
+          onChange={(e) => handleChangeAttribute(e)}
+        >
+          <EditablePreview padding="0" />
+          <EditableInput w="30px" h="25px" />
+        </Editable>
+      </Box>
     </Box>
   );
 };

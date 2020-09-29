@@ -9,6 +9,7 @@ const EditorProvider: React.FC<EditorProviderPropsType> = ({
   children,
   characters,
   users,
+  tableInformation,
 }) => {
   const [openedSheets, setOpenedSheets] = useState<string[]>([]);
 
@@ -35,6 +36,7 @@ const EditorProvider: React.FC<EditorProviderPropsType> = ({
   return (
     <EditorContext.Provider
       value={{
+        tableInformation,
         characters,
         users,
         openSheet,

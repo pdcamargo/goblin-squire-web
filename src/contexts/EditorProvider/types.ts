@@ -1,8 +1,9 @@
-import { Character, DndUser } from '~/interfaces/dnd';
+import { Character, DndUser, TableInformation } from '~/interfaces/dnd';
 
 export type EditorProviderPropsType = {
   characters: Character[];
   users: DndUser[];
+  tableInformation: TableInformation;
 };
 
 export type EditorContextType = EditorProviderPropsType & {

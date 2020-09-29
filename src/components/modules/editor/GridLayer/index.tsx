@@ -6,7 +6,7 @@ import Konva from 'konva';
 function GridLayer() {
   const [lines, setLines] = useState<Konva.LineConfig[]>([]);
 
-  const lineColor = '#dddddd6b';
+  const lineColor = '#dddddd';
 
   useEffect(() => {
     const layerLines = [];
